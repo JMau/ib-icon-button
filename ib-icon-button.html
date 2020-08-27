@@ -1,0 +1,91 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/elements/dom-if.html">
+
+
+<dom-module id="ib-icon-button">
+  <template>
+    <style>
+      :host {
+        display: inline;
+        @apply --ib-icon-button;
+      }
+      .button {
+        padding: 0px;
+        width: var(--ib-icon-button-button-width, auto);
+        height: var(--ib-icon-button-button-height, auto);
+        background-color: teal;
+        @apply --ib-icon-button-button;
+      }
+      .label {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        @apply --ib-icon-button-button-label;
+      }
+      .icon {
+        width: inherit;
+        height: inherit;
+      }
+      ::slotted(*) {
+        text-align: center;
+        color: white;
+        @apply --ib-icon-button-button-tag;
+      }
+      
+    </style>
+  <button class="button" type="button">
+    <div class="label">
+      <template is="dom-if" if="[[isIcon]]">
+        <img class="icon" src="[[src]]" alt="[[alt]]">
+      </template>
+      <template is="dom-if" if="[[!isIcon]]">
+        <slot name='tag'></slot>
+      </template>
+    </div>
+  </button>
+  </template>
+
+
+  <script>
+    /**
+     * `ib-icon-button`
+     * Boton con icono
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class IbIconButton extends Polymer.Element {
+      static get is() { return 'ib-icon-button'; }
+      static get properties() {
+        return {
+          src: {
+            type: String,
+            value: '#'
+          },
+          alt: {
+            type: String,
+            value: 'is no icon'
+          },
+          isIcon: {
+            type:Boolean,
+            computed: '_isIcon(src)'
+          }
+        };
+      }
+
+      _isIcon(src){
+        let icon = false;
+        if(src != '#'){
+          icon = true;
+        }
+        return icon;
+      }
+    }
+
+    window.customElements.define(IbIconButton.is, IbIconButton);
+  </script>
+</dom-module>
